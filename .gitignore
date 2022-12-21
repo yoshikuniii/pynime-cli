@@ -1,0 +1,9 @@
+# ignore file
+*.pyc
+*.pyo
+test.py
+
+# ignore folder
+dist/
+build/
+__pycache__/

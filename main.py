@@ -11,15 +11,17 @@ from pynimeapi import PyNime
 api = PyNime()
 
 if os.path.isfile("app.json") == False:
-	print("[!] Hai, ini pertama kalinya kamu buka aplikasi ini.")
-	print("    Saat dialog file picker muncul, silakan pilih lokasi media favorit kamu!")
-	print("    [Direkomendasikan menggunakan mpv.]")
-	print("\nPress enter to continue...")
+	print("Hai, ini pertama kalinya kamu buka aplikasi ini.")
+	print("Saat dialog file picker muncul, silakan pilih lokasi media favorit kamu!")
+	print("\n[Direkomendasikan menggunakan mpv atau vlc.]")
+	print("Press enter to continue...")
 	keyboard.wait("enter")
 
 	with open("app.json", "w") as appjson:
 		Tk().withdraw()
-		media_player_filename = askopenfilename(title="Pilih lokasi media player (app.exe)", filetypes=[("Executable (*.exe)","*.exe")])
+		media_player_filename = askopenfilename(
+			title="Pilih lokasi media player (app.exe)",
+			filetypes=[("Executable (*.exe)","*.exe")])
 		
 		json_dict = {
 			'app_name' : f"{os.path.basename(media_player_filename)}",
@@ -37,11 +39,18 @@ app_config.close()
 def recent_anime():
 	os.system('cls')
 	print("==========================.-=PyNime=-.============================")
-		
+	current_datetime = time.strftime(
+		"%a, %d %b %Y %H:%M:%S",
+		time.gmtime(1627987508.6496193)
+		)
+	print(f"      [{current_datetime}] - [20 Baru saja diuplad]\n")
+
 	# print anime yang baru aja diupload
 	recent_anime = api.get_recent_release(page=1)
 	for anime in recent_anime:
 		print(f"=> {anime.title} [EP: {anime.latest_episode}]")
+
+	print("==========================.-=PyNime=-.============================")
 
 
 def cari_anime(anime_title: str):
@@ -71,7 +80,7 @@ def cari_anime(anime_title: str):
 				anime_choice = int(anime_choice)
 
 			if (anime_choice > len(anime_result_list)-1) or (anime_choice < 0):
-				print(f"[ERROR] Input diluar index! Pilih angka 0~{len(anime_result_list)-1}")
+				print(f"[ERROR] Input diluar index! Pilih angka 0-{len(anime_result_list)-1}")
 				continue
 			else:
 				break
@@ -80,12 +89,12 @@ def cari_anime(anime_title: str):
 			continue
 
 	anime_details = api.get_anime_details(anime_result_list[anime_choice].category_url)
-	print("\n[Info Anime] ==================================================")
+	print("\n[Info Anime] =====================================================")
 	print(f"Title \t: {anime_details.title}")
 	print(f"Genres \t: {anime_details.genres}")
 	print(f"Year \t: {anime_details.released}")
 	print(f"Status \t: {anime_details.status}\n")
-	print("[Pilih Episode] ===============================================")
+	print("[Pilih Episode] ==================================================")
 
 	episodes = api.get_episode_urls(anime_result_list[anime_choice].category_url)
 
@@ -102,7 +111,7 @@ def cari_anime(anime_title: str):
 				episode_choice = int(episode_choice)
 
 			if (episode_choice > len(episodes)) or (episode_choice < 1):
-				print(f"[ERROR] Input diluar index! Pilih angka 1~{len(episodes)}")
+				print(f"[ERROR] Input diluar index! Pilih angka 1-{len(episodes)}")
 				continue
 			else:
 				break
@@ -116,8 +125,8 @@ def cari_anime(anime_title: str):
 
 	stream_urls = api.get_stream_urls(anime_episode_url = episodes[episode_choice - 1])
 	print(f"[?] Resolusi video tersedia {list(stream_urls.keys())}")
-	resolution = str(input("[>] Pilih resolusi video []: "))
-
+	resolution = str(input("[>] Pilih resolusi video: "))
+	print("Playing media...")
 	subprocess.run("{} {}".format(player_location, stream_urls[resolution]))
 
 	print("Ending seasion...")
@@ -128,9 +137,9 @@ while True:
 		recent_anime()
 
 		try:
-			print("\n\tKetik 'search (judul anime)' untuk cari anime.")
-			print("\tKetik 'schedule' untuk menampilkan jadwal minggu ini.")
-			print("\tCatatan: Di setiap input, ketik 'q' untuk kembali ke menu utama.")
+			print("\n   Ketik 'search (judul anime)' untuk cari anime.")
+			print("   Ketik 'schedule' untuk menampilkan jadwal minggu ini.")
+			print("   Catatan: Di setiap input, ketik 'q' untuk kembali ke menu utama.")
 			choice = input("\n[>] ")
 
 			if choice[:6] == "search":
@@ -144,11 +153,16 @@ while True:
 			if choice == "q":
 				break
 
-		except:
+		except Exception as e:
 			print("[ERROR] GOBLOG!")
+			print(e)
+
+			time.sleep(5)
 			continue
 
 	except Exception as e:
 		print("Upss.. error kenapa nih?")
 		print(e)
+
+		time.sleep(5)
 		raise SystemExit(0)
