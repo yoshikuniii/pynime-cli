@@ -10,18 +10,6 @@ from tkinter.filedialog import askopenfilename
 from pynimeapi import PyNime
 api = PyNime()
 
-# check apakah file konfigurasi ada apa nggak
-# kalo udah ada, load file konfigurasinya
-# kalo gaada, buat konfigurasi baru
-if os.path.isfile("app.json") == True:
-	app_config = open("app.json")
-	app_json = json.load(app_config)
-	player_location = app_json['app_location']
-	video_res = app_json['app_default_resolution']
-	app_config.close()
-else:
-	app_configuration()
-
 
 def app_configuration():
 	''' Ini function untuk membuat file konfigurasi
@@ -189,6 +177,17 @@ def cari_anime(anime_title: str):
 	print("Closing media player...")
 	time.sleep(3)
 
+# check apakah file konfigurasi ada apa nggak
+# kalo udah ada, load file konfigurasinya
+# kalo gaada, buat konfigurasi baru
+if os.path.isfile("app.json") == True:
+	app_config = open("app.json")
+	app_json = json.load(app_config)
+	player_location = app_json['app_location']
+	video_res = app_json['app_default_resolution']
+	app_config.close()
+else:
+	app_configuration()
 
 while True:
 	''' Loop di sini bertindak sebagai menu aplikasi
