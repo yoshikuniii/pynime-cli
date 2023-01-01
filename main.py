@@ -1,7 +1,7 @@
 import os
 import time
-import keyboard
 import json
+import keyboard
 import subprocess
 
 from tkinter import *
@@ -188,6 +188,11 @@ if os.path.isfile("app.json") == True:
 	app_config.close()
 else:
 	app_configuration()
+	app_config = open("app.json")
+	app_json = json.load(app_config)
+	player_location = app_json['app_location']
+	video_res = app_json['app_default_resolution']
+	app_config.close()
 
 while True:
 	''' Loop di sini bertindak sebagai menu aplikasi
