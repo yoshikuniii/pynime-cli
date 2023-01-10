@@ -1,6 +1,7 @@
 # ignore file
 *.pyc
 *.pyo
+*.json
 test.py
 
 # ignore folder

@@ -213,7 +213,7 @@ while True:
 				cari_anime(choice[7:])
 			
 			if choice == "schedule":
-				api.get_schedule(int(time.time()))
+				api.get_schedule()
 				print("Press enter to continue...")
 				keyboard.wait("enter")
 
