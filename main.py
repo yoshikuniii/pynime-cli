@@ -19,6 +19,8 @@ def app_configuration():
 	print("Saat dialog file picker muncul, silakan pilih lokasi media favorit kamu!")
 	print("\n[Direkomendasikan menggunakan mpv atau vlc.]")
 
+	time.sleep(5)
+
 	# nama file konfigurasinya adalah "app.json"
 	with open("app.json", "w") as appjson:
 		print("[~] Pilih lokasi media player...")
@@ -53,7 +55,7 @@ def recent_anime():
 	print("==========================.-=PyNime=-.============================")
 	current_datetime = time.strftime(
 		"%a, %d %b %Y %H:%M:%S",
-		time.gmtime(time.time())
+		time.localtime()
 		)
 	print(f"      [{current_datetime}] - [20 Baru saja diupload]\n")
 
