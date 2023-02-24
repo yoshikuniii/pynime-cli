@@ -23,23 +23,52 @@ def app_configuration():
 
 	# nama file konfigurasinya adalah "app.json"
 	with open("app.json", "w") as appjson:
-		print("[~] Pilih lokasi media player...")
+		try:
+			# pilih resolusi video
+			print("\n[~] Pilih resolusi video.")
+			print("==================================================================")
+			print("[1] Very high: 1080p")
+			print("[2] High: 720p")
+			print("[3] Medium: 480p")
+			print("[4] Low: 360p")
+			print("[5] Very low: below 360p\n")
 
+			video_res = int(input("[>] Pilih resolusi video [1-5]: "))
+			
+			if video_res > 5 or video_res < 1:
+				print("[!] fucking moron! input hanya angka 1 sampai 5.")
+				print("[!] resolution set to high\n")
+				video_res = "high"
+			
+			if video_res == 1:
+				video_res = "very high"
+			if video_res == 2:
+				video_res = "high"
+			if video_res == 3:
+				video_res = "medium"
+			if video_res == 4:
+				video_res = "low"
+			if video_res == 5:
+				video_res = "very low"
+
+		except Exception as e:
+			print("[!] fucking stupid! input hanya angka 1 sampai 5.")
+			print("[!] resolution set to high\n")
+			video_res = "high"
+
+		# pilih lokasi aplikasi media player
+		print("[~] Pilih lokasi media player...")
 		Tk().withdraw()
 		media_player_filename = askopenfilename(
 			title="Pilih lokasi media player (app.exe)",
 			filetypes=[("Executable (*.exe)","*.exe")])
 		print(f"[!] Media player dipilih!\n    New location : {media_player_filename}")
 		
-		print("\n[~] Pilih default resolusi video.")
-		print("[Very high: 1080, High: 720, Medium: 480, Low: 360]")
-		video_res = input(" Very high, High, medium, or low? ")
-		video_res = video_res.lower()
-
+		# simpan data dalam bentuk json
 		json_dict = {
 			'app_name' : f"{os.path.basename(media_player_filename)}",
 			'app_location' : f"{media_player_filename}",
-			'app_default_resolution' : f"{video_res}",
+			'default_resolution' : f"{video_res}",
 		}
 		json_obj = json.dumps(json_dict)
 		appjson.write(json_obj)
@@ -186,14 +215,14 @@ if os.path.isfile("app.json") == True:
 	app_config = open("app.json")
 	app_json = json.load(app_config)
 	player_location = app_json['app_location']
-	video_res = app_json['app_default_resolution']
+	video_res = app_json['default_resolution']
 	app_config.close()
 else:
 	app_configuration()
 	app_config = open("app.json")
 	app_json = json.load(app_config)
 	player_location = app_json['app_location']
-	video_res = app_json['app_default_resolution']
+	video_res = app_json['default_resolution']
 	app_config.close()
 
 while True:
@@ -227,7 +256,7 @@ while True:
 				app_config = open("app.json")
 				app_json = json.load(app_config)
 				player_location = app_json['app_location']
-				video_res = app_json['app_default_resolution']
+				video_res = app_json['default_resolution']
 				app_config.close()
 
 			if choice == "q":
