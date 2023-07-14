@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import json
 import keyboard
@@ -80,7 +81,13 @@ def recent_anime():
 		Simpelnya, ini menampilkan anime di halaman utama gogoanime.
 		Cek dokumentasi library PyNime.
 	''' 
-	os.system('cls')
+	
+	# clear screen
+	if sys.platform.startswith('win'):
+		os.system('cls')	# if running on Windows
+	else:
+		os.system('clear')	# if running on Linux
+
 	print("==========================.-=PyNime=-.============================")
 	current_datetime = time.strftime(
 		"%a, %d %b %Y %H:%M:%S",
